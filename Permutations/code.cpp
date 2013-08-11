@@ -1,49 +1,37 @@
 #include <cstdio>
+#include <cstring>
 
 const int maxN = 10;
 
-int N;
 bool used[maxN];
 int perm[maxN];
 
-void search ()
+void search (int N)
 {
   static int is[maxN];
+  memset(used, false, N);
   int lv = 0;
   is[lv] = -1;
-  while (true)
+  while (lv >= 0)
   {
     int &i = is[lv];
-    if (i == -1)
+    if (i != -1)
+      used[i] = false;
+    ++i;
+    while (i < N && used[i])
+      ++i;
+    if (i == N)
+      --lv;
+    else
     {
-      if (lv == N)
+      perm[lv] = i;
+      used[i] = true;
+      if (lv < N - 1)
+        is[++lv] = -1;
+      else
       {
         for (int j = 0; j < N; ++j)
           printf("%d%c", perm[j], j < N - 1 ? ' ' : '\n');
-        i = N;
-      }
-      else
-        i = 0;
-    }
-    if (i == N)
-    {
-      if (lv == 0)
-        break;
-      --lv;
-      int &i2 = is[lv];
-      used[i2] = false;
-      ++i2;
-    }
-    else
-    {
-      while (i < N && used[i])
-        ++i;
-      if (i < N)
-      {
-        perm[lv] = i;
-        used[i] = true;
-        ++lv;
-        is[lv] = -1;
       }
     }
   }
@@ -51,6 +39,5 @@ void search ()
 
 int main ()
 {
-  N = 4;
-  search();
+  search(4);
 }
