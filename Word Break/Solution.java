@@ -7,9 +7,6 @@ public class Solution
     HashMap<Character, Node> next = new HashMap<Character, Node>();
   }
 
-  Node trieRoot;
-  boolean[] canBreak;
-
   Node buildTrie (Set<String> dict)
   {
     Node root = new Node();
@@ -28,15 +25,14 @@ public class Solution
     return root;
   }
 
-  public boolean wordBreak (String s, Set<String> dict)
+  boolean[] calcCanBreak (String s, Node trie)
   {
-    trieRoot = buildTrie(dict);
-    canBreak = new boolean[s.length() + 1];
+    boolean[] canBreak = new boolean[s.length() + 1];
     canBreak[s.length()] = true;
     for (int i = s.length() - 1; i >= 0; --i)
     {
       canBreak[i] = false;
-      Node p = trieRoot;
+      Node p = trie;
       for (int j = i; j < s.length(); ++j)
       {
         char c = s.charAt(j);
@@ -51,6 +47,13 @@ public class Solution
         }
       }
     }
+    return canBreak;
+  }
+
+  public boolean wordBreak (String s, Set<String> dict)
+  {
+    Node trie = buildTrie(dict);
+    boolean[] canBreak = calcCanBreak(s, trie);
     return canBreak[0];
   }
 
