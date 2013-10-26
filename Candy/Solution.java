@@ -1,48 +1,53 @@
 public class Solution
 {
 
-  static class Child implements Comparable<Child>
+  int N;
+  int[] ratings;
+  int[] candy;
+
+  boolean[] vis;
+  int[] order;
+  int orderIdx;
+
+  void DFS (int u)
   {
-    int rating;
-    int pos;
+    if (vis[u])
+      return;
+    vis[u] = true;
+    if (u - 1 >= 0 && ratings[u - 1] > ratings[u])
+      DFS(u - 1);
+    if (u + 1 < N && ratings[u + 1] > ratings[u])
+      DFS(u + 1);
+    order[orderIdx--] = u;
+  }
 
-    public Child (int rating, int pos)
-    {
-      this.rating = rating;
-      this.pos = pos;
-    }
-
-    public int compareTo (Child o)
-    {
-      if (rating < o.rating)
-        return -1;
-      else if (rating > o.rating)
-        return 1;
-      else
-        return 0;
-    }
+  void calcOrder ()
+  {
+    vis = new boolean[N];
+    order = new int[N];
+    orderIdx = N - 1;
+    for (int i = N - 1; i >= 0; --i)
+      DFS(i);
   }
 
   public int candy (int[] ratings)
   {
-    int n = ratings.length;
-    Child[] children = new Child[n];
-    for (int i = 0; i < n; ++i)
-      children[i] = new Child(ratings[i], i);
-    Arrays.sort(children);
-    int[] candy = new int[n];
-    for (int i = 0; i < n; ++i)
+    N = ratings.length;
+    this.ratings = ratings;
+    calcOrder();
+    candy = new int[N];
+    for (int i = 0; i < N; ++i)
     {
-      int p = children[i].pos;
+      int p = order[i];
       int c = 0;
       if (p - 1 >= 0 && ratings[p - 1] < ratings[p])
         c = Math.max(c, candy[p - 1]);
-      if (p + 1 < n && ratings[p + 1] < ratings[p])
+      if (p + 1 < N && ratings[p + 1] < ratings[p])
         c = Math.max(c, candy[p + 1]);
       candy[p] = c + 1;
     }
     int sum = 0;
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < N; ++i)
       sum += candy[i];
     return sum;
   }
