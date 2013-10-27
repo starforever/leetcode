@@ -4,7 +4,7 @@ public class Solution
   static class State
   {
     int step;
-    LinkedList<String> prev = new LinkedList<String>();
+    LinkedList<String> prevList = new LinkedList<String>();
 
     public State (int step)
     {
@@ -16,18 +16,17 @@ public class Solution
 
   ArrayList<ArrayList<String>> findSeqList (String cur)
   {
+    State curState = vis.get(cur);
+    if (curState.prevList.isEmpty())
+      return new ArrayList<ArrayList<String>>(Arrays.asList(new ArrayList<String>(Arrays.asList(cur))));
     ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
-    for (String next : vis.get(cur).prev)
+    for (String prev : curState.prevList)
     {
-      for (ArrayList<String> nextSeq : findSeqList(next))
+      for (ArrayList<String> seq : findSeqList(prev))
       {
-        nextSeq.add(cur);
-        ret.add(nextSeq);
+        seq.add(cur);
+        ret.add(seq);
       }
-    }
-    if (ret.isEmpty())
-    {
-      ret.add(new ArrayList<String>(Arrays.asList(cur)));
     }
     return ret;
   }
@@ -50,12 +49,15 @@ public class Solution
       State curState = vis.get(cur);
       if (cur.equals(end))
         return findSeqList(cur);
+      char[] buffer = cur.toCharArray();
       for (int i = 0; i < cur.length(); ++i)
+      {
         for (char c = 'a'; c <= 'z'; ++c)
         {
           if (c == cur.charAt(i))
             continue;
-          String next = cur.substring(0, i) + c + cur.substring(i + 1);
+          buffer[i] = c;
+          String next = new String(buffer);
           if (!dict.contains(next))
             continue;
           if (!vis.containsKey(next))
@@ -66,9 +68,11 @@ public class Solution
           State nextState = vis.get(next);
           if (curState.step + 1 == nextState.step)
           {
-            nextState.prev.add(cur);
+            nextState.prevList.add(cur);
           }
         }
+        buffer[i] = cur.charAt(i);
+      }
     }
     return new ArrayList<ArrayList<String>>();
   }
