@@ -4,12 +4,32 @@ public class Solution
   static class State
   {
     int step;
-    ArrayList<ArrayList<String>> seqList = new ArrayList<ArrayList<String>>();
+    LinkedList<String> prev = new LinkedList<String>();
 
     public State (int step)
     {
       this.step = step;
     }
+  }
+
+  HashMap<String, State> vis;
+
+  ArrayList<ArrayList<String>> findSeqList (String cur)
+  {
+    ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+    for (String next : vis.get(cur).prev)
+    {
+      for (ArrayList<String> nextSeq : findSeqList(next))
+      {
+        nextSeq.add(cur);
+        ret.add(nextSeq);
+      }
+    }
+    if (ret.isEmpty())
+    {
+      ret.add(new ArrayList<String>(Arrays.asList(cur)));
+    }
+    return ret;
   }
 
   public ArrayList<ArrayList<String>> findLadders (String start, String end, HashSet<String> dict)
@@ -21,17 +41,15 @@ public class Solution
     if (start.equals(end))
       return new ArrayList<ArrayList<String>>(Arrays.asList(new ArrayList<String>(Arrays.asList(start))));
     LinkedList<String> queue = new LinkedList<String>();
-    HashMap<String, State> vis = new HashMap<String, State>();
-    State startState = new State(1);
-    startState.seqList.add(new ArrayList<String>(Arrays.asList(start)));
+    vis = new HashMap<String, State>();
     queue.add(start);
-    vis.put(start, startState);
+    vis.put(start, new State(1));
     while (!queue.isEmpty())
     {
       String cur = queue.remove();
       State curState = vis.get(cur);
       if (cur.equals(end))
-        return curState.seqList;
+        return findSeqList(cur);
       for (int i = 0; i < cur.length(); ++i)
         for (char c = 'a'; c <= 'z'; ++c)
         {
@@ -48,12 +66,7 @@ public class Solution
           State nextState = vis.get(next);
           if (curState.step + 1 == nextState.step)
           {
-            for (ArrayList<String> curSeq : curState.seqList)
-            {
-              ArrayList<String> nextSeq = new ArrayList<String>(curSeq);
-              nextSeq.add(next);
-              nextState.seqList.add(nextSeq);
-            }
+            nextState.prev.add(cur);
           }
         }
     }
