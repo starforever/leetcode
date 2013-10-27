@@ -1,0 +1,36 @@
+public class Solution
+{
+  public int ladderLength (String start, String end, HashSet<String> dict)
+  {
+    if (start == null || end == null || dict == null)
+      return 0;
+    if (!dict.contains(start))
+      return 0;
+    if (start.equals(end))
+      return 1;
+    LinkedList<String> queue = new LinkedList<String>();
+    HashMap<String, Integer> vis = new HashMap<String, Integer>();
+    queue.add(start);
+    vis.put(start, 1);
+    while (!queue.isEmpty())
+    {
+      String cur = queue.remove();
+      int step = vis.get(cur);
+      for (int i = 0; i < cur.length(); ++i)
+        for (char c = 'a'; c <= 'z'; ++c)
+        {
+          if (c == cur.charAt(i))
+            continue;
+          String next = cur.substring(0, i) + c + cur.substring(i + 1);
+          if (dict.contains(next) && !vis.containsKey(next))
+          {
+            if (next.equals(end))
+              return step + 1;
+            vis.put(next, step + 1);
+            queue.add(next);
+          }
+        }
+    }
+    return 0;
+  }
+}
