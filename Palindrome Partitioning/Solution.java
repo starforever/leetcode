@@ -1,29 +1,34 @@
 public class Solution
 {
 
-  HashMap<String, ArrayList<ArrayList<String>>> mem;
+  HashMap<String, ArrayList<ArrayList<String>>> memPartition;
+  HashMap<String, Boolean> memPalindrome;
 
   boolean isPalindrome (String str)
   {
+    if (str.length() <= 1)
+      return true;
+    if (memPalindrome.containsKey(str))
+      return memPalindrome.get(str);
     int n = str.length();
-    for (int i = 0; i < n / 2; ++i)
-      if (str.charAt(i) != str.charAt(n - 1 - i))
-        return false;
-    return true;
+    boolean ret = str.charAt(0) == str.charAt(n - 1) && isPalindrome(str.substring(1, n - 1));
+    memPalindrome.put(str, ret);
+    return ret;
   }
 
   ArrayList<ArrayList<String>> getPartitions (String str)
   {
-    if (mem.containsKey(str))
-      return mem.get(str);
-    ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
-    if (isPalindrome(str))
+    if (memPartition.containsKey(str))
+      return memPartition.get(str);
+    if (str.isEmpty())
     {
-      ArrayList<String> sol = new ArrayList<String>();
-      sol.add(str);
-      ret.add(sol);
+      ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+      ret.add(new ArrayList<String>());
+      memPartition.put(str, ret);
+      return ret;
     }
-    for (int i = 1; i < str.length(); ++i)
+    ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+    for (int i = 0; i < str.length(); ++i)
     {
       String part1 = str.substring(0, i), part2 = str.substring(i);
       if (isPalindrome(part2))
@@ -36,13 +41,14 @@ public class Solution
         }
       }
     }
-    mem.put(str, ret);
+    memPartition.put(str, ret);
     return ret;
   }
 
   public ArrayList<ArrayList<String>> partition (String s)
   {
-    mem = new HashMap<String, ArrayList<ArrayList<String>>>();
+    memPartition = new HashMap<String, ArrayList<ArrayList<String>>>();
+    memPalindrome = new HashMap<String, Boolean>();
     return getPartitions(s);
   }
 }
