@@ -16,12 +16,15 @@ public class Solution
     {
       String cur = queue.remove();
       int step = vis.get(cur);
+      char[] buffer = cur.toCharArray();
       for (int i = 0; i < cur.length(); ++i)
+      {
         for (char c = 'a'; c <= 'z'; ++c)
         {
           if (c == cur.charAt(i))
             continue;
-          String next = cur.substring(0, i) + c + cur.substring(i + 1);
+          buffer[i] = c;
+          String next = new String(buffer);
           if (dict.contains(next) && !vis.containsKey(next))
           {
             if (next.equals(end))
@@ -30,6 +33,8 @@ public class Solution
             queue.add(next);
           }
         }
+        buffer[i] = cur.charAt(i);
+      }
     }
     return 0;
   }
