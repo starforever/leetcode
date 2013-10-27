@@ -1,27 +1,31 @@
 public class Solution
 {
 
-  boolean isPalindrome (String s)
+  boolean[][] calcIsPalindrome (String s)
   {
-    int n = s.length();
-    for (int i = 0; i < n / 2; ++i)
-      if (s.charAt(i) != s.charAt(n - 1 - i))
-        return false;
-    return true;
+    int N = s.length();
+    boolean[][] ret = new boolean[N][N + 1];
+    for (int i = 0; i < N; ++i)
+      ret[i][i] = ret[i][i + 1] = true;
+    for (int l = 2; l <= N; ++l)
+      for (int i = 0; i + l <= N; ++i)
+        ret[i][i + l] = s.charAt(i) == s.charAt(i + l - 1) && ret[i + 1][i + l - 1];
+    return ret;
   }
 
   public int minCut (String s)
   {
     int N = s.length();
-    int[] numCut = new int[N + 1];
-    numCut[0] = 0;
+    boolean[][] isPalindrome = calcIsPalindrome(s);
+    int[] numPart = new int[N + 1];
+    numPart[0] = 0;
     for (int i = 1; i <= N; ++i)
     {
-      numCut[i] = Integer.MAX_VALUE;
+      numPart[i] = Integer.MAX_VALUE;
       for (int j = 0; j < i; ++j)
-        if (isPalindrome(s.substring(j, i)))
-          numCut[i] = Math.min(numCut[i], numCut[j] + 1);
+        if (isPalindrome[j][i])
+          numPart[i] = Math.min(numPart[i], numPart[j] + 1);
     }
-    return numCut[N];
+    return numPart[N] - 1;
   }
 }
