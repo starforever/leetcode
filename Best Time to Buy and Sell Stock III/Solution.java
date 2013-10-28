@@ -5,27 +5,28 @@ public class Solution
     if (prices == null || prices.length <= 1)
       return 0;
     int n = prices.length;
-    int maxProfit = 0;
-    int maxProfit1 = 0;
-    int minPrice1 = prices[0];
+
+    int[] prev = new int[n];
+    int valley = prices[0];
+    prev[0] = 0;
     for (int i = 1; i < n; ++i)
     {
-      int profit1 = prices[i] - minPrice1;
-      minPrice1 = Math.min(minPrice1, prices[i]);
-      if (profit1 > maxProfit1)
-      {
-        maxProfit1 = profit1;
-        int maxProfit2 = 0;
-        int minPrice2 = prices[i];
-        for (int j = i + 1; j < n; ++j)
-        {
-          int profit2 = prices[j] - minPrice2;
-          minPrice2 = Math.min(minPrice2, prices[j]);
-          maxProfit2 = Math.max(maxProfit2, profit2);
-        }
-        maxProfit = Math.max(maxProfit, maxProfit1 + maxProfit2);
-      }
+      valley = Math.min(valley, prices[i]);
+      prev[i] = Math.max(prices[i] - valley, prev[i - 1]);
     }
+
+    int[] next = new int[n];
+    int peak = prices[n - 1];
+    next[n - 1] = 0;
+    for (int i = n - 2; i >= 0; --i)
+    {
+      peak = Math.max(peak, prices[i]);
+      next[i] = Math.max(peak - prices[i], next[i + 1]);
+    }
+
+    int maxProfit = 0;
+    for (int i = 0; i < n; ++i)
+      maxProfit = Math.max(maxProfit, prev[i] + next[i]);
     return maxProfit;
   }
 }
