@@ -21,18 +21,18 @@ public class Solution
     while (!curLevel.isEmpty())
     {
       ArrayList<Integer> row = new ArrayList<Integer>();
-      Iterator<TreeNode> it = straight ? curLevel.iterator() : curLevel.descendingIterator();
-      while (it.hasNext())
-        row.add(it.next().val);
+      for (TreeNode p : curLevel)
+        row.add(p.val);
       levelList.add(row);
       LinkedList<TreeNode> nextLevel = new LinkedList<TreeNode>();
-      while (!curLevel.isEmpty())
+      Iterator<TreeNode> it = curLevel.descendingIterator();
+      while (it.hasNext())
       {
-        TreeNode p = curLevel.remove();
-        if (p.left != null)
-          nextLevel.add(p.left);
-        if (p.right != null)
-          nextLevel.add(p.right);
+        TreeNode p = it.next();
+        TreeNode[] child = straight ? new TreeNode[]{p.right, p.left} : new TreeNode[]{p.left, p.right};
+        for (int i = 0; i < child.length; ++i)
+          if (child[i] != null)
+            nextLevel.add(child[i]);
       }
       curLevel = nextLevel;
       straight = !straight;
