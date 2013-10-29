@@ -11,30 +11,28 @@
 public class Solution
 {
 
-  boolean check (TreeNode p)
+  int lastVal;
+  boolean isBST;
+
+  void traverse (TreeNode p)
   {
-    if (p.left != null)
-    {
-      if (p.left.val >= p.val)
-        return false;
-      if (!check(p.left))
-        return false;
-    }
-    if (p.right != null)
-    {
-      if (p.right.val <= p.val)
-        return false;
-      if (!check(p.right))
-        return false;
-    }
-    return true;
+    if (!isBST)
+      return;
+    if (p == null)
+      return;
+    traverse(p.left);
+    if (p.val <= lastVal)
+      isBST = false;
+    lastVal = p.val;
+    traverse(p.right);
   }
 
   public boolean isValidBST (TreeNode root)
   {
-    if (root == null)
-      return true;
-    return check(root);
+    lastVal = Integer.MIN_VALUE;
+    isBST = true;
+    traverse(root);
+    return isBST;
   }
 
 }
