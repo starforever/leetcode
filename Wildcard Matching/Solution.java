@@ -1,38 +1,41 @@
 public class Solution
 {
-  public boolean isMatch (String ss, String ps)
+
+  boolean match (String s, String p)
   {
-    char[] s = ss.toCharArray(), p = ps.toCharArray();
-    int N = s.length, M = p.length;
-    int i = 0, j = 0;
-    int li = -1, lj = -1;
-    while (i < N || j < M)
-    {
-      if (i < N && j < M && (s[i] == p[j] || p[j] == '?'))
-      {
-        ++i;
-        ++j;
-      }
-      else if (j < M && p[j] == '*')
-      {
-        while (j < M && p[j] == '*')
-          ++j;
-        if (j == M)
-          return true;
-        if (i == N)
-          return false;
-        li = i;
-        lj = j;
-      }
-      else if (i < N && (j == M || s[i] != p[j]))
-      {
-        if (lj == -1)
-          return false;
-        i = ++li;
-        j = lj;
-      }
-      else
+    for (int i = 0; i < s.length(); ++i)
+      if (!(s.charAt(i) == p.charAt(i) || p.charAt(i) == '?'))
         return false;
+    return true;
+  }
+
+  public boolean isMatch (String s, String p)
+  {
+    if (s == null || p == null)
+      return false;
+    int front = p.indexOf('*'), back = p.length() - p.lastIndexOf('*') - 1;
+    if (front == -1)
+      return s.length() == p.length() && match(s, p);
+    if (!(front + back <= s.length() && match(s.substring(0, front), p.substring(0, front)) && match(s.substring(s.length() - back), p.substring(p.length() - back))))
+      return false;
+    s = s.substring(front, s.length() - back);
+    p = p.substring(front, p.length() - back);
+    int i1 = 0, i2 = 0;
+    while (true)
+    {
+      while (i2 < p.length() && p.charAt(i2) == '*')
+        ++i2;
+      if (i2 == p.length())
+        break;
+      int st = i2;
+      while (p.charAt(i2) != '*')
+        ++i2;
+      String piece = p.substring(st, i2);
+      while (i1 + piece.length() <= s.length() && !match(s.substring(i1, i1 + piece.length()), piece))
+        ++i1;
+      if (i1 + piece.length() > s.length())
+        return false;
+      i1 += piece.length();
     }
     return true;
   }
