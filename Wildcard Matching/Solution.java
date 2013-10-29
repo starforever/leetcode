@@ -1,27 +1,39 @@
 public class Solution
 {
-  public boolean isMatch (String s, String p)
+  public boolean isMatch (String ss, String ps)
   {
-    int N = s.length(), M = p.length();
-    boolean[][] match = new boolean[2][M + 1];
-    match[0][0] = true;
-    for (int j = 1; j <= M; ++j)
-      if (p.charAt(j - 1) == '*')
-        match[0][j] = true;
-      else
-        break;
-    for (int i = 1; i <= N; ++i)
-      for (int j = 1; j <= M; ++j)
+    char[] s = ss.toCharArray(), p = ps.toCharArray();
+    int N = s.length, M = p.length;
+    int i = 0, j = 0;
+    int li = -1, lj = -1;
+    while (i < N || j < M)
+    {
+      if (i < N && j < M && (s[i] == p[j] || p[j] == '?'))
       {
-        char a = s.charAt(i - 1), b = p.charAt(j - 1);
-        int cur = i & 1, prev = cur ^ 1;
-        if (b == '*')
-          match[cur][j] = match[cur][j - 1] || match[prev][j];
-        else if (b == '?')
-          match[cur][j] = match[prev][j - 1];
-        else
-          match[cur][j] = (a == b) && match[prev][j - 1];
+        ++i;
+        ++j;
       }
-    return match[N & 1][M];
+      else if (j < M && p[j] == '*')
+      {
+        while (j < M && p[j] == '*')
+          ++j;
+        if (j == M)
+          return true;
+        if (i == N)
+          return false;
+        li = i;
+        lj = j;
+      }
+      else if (i < N && (j == M || s[i] != p[j]))
+      {
+        if (lj == -1)
+          return false;
+        i = ++li;
+        j = lj;
+      }
+      else
+        return false;
+    }
+    return true;
   }
 }
