@@ -15,31 +15,31 @@ public class Solution
   public ArrayList<Integer> inorderTraversal (TreeNode root)
   {
     ArrayList<Integer> ret = new ArrayList<Integer>();
-    if (root == null)
-      return ret;
-    LinkedList<State> stack = new LinkedList<State>();
-    stack.add(new State(root));
-    while (!stack.isEmpty())
+    Stack<State> stack = new Stack<State>();
+    if (root != null)
+      stack.push(new State(root));
+    while (!stack.empty())
     {
-      State s = stack.getLast();
+      State s = stack.peek();
       switch (s.stage)
       {
         case 0:
           if (s.cur.left != null)
-            stack.addLast(new State(s.cur.left));
+            stack.push(new State(s.cur.left));
           ++s.stage;
           break;
         case 1:
           ret.add(s.cur.val);
           if (s.cur.right != null)
-            stack.addLast(new State(s.cur.right));
+            stack.push(new State(s.cur.right));
           ++s.stage;
           break;
         case 2:
-          stack.removeLast();
+          stack.pop();
           break;
       }
     }
     return ret;
   }
+
 }
