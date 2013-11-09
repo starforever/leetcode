@@ -1,21 +1,27 @@
-prob="$1"
+if [ "$1" ]
+then
+  prob="$1"
+else
+  echo "Problem name required."
+  exit
+fi
 if [ "$2" ]
 then
-  status="$2"
+  sub="_$2"
 else
-  status="Accepted"
+  sub=""
 fi
 if [ "$3" ]
 then
-  info=" $3"
+  status="$3"
 else
-  info=""
+  status="Accepted"
 fi
 if [ "$4" ]
 then
-  sub="_$4"
+  info=" $4"
 else
-  sub=""
+  info=""
 fi
 
 git add "$prob/Solution$sub.java"
