@@ -1,4 +1,4 @@
-git add "$1"/Solution.java
+prob="$1"
 if [ "$2" ]
 then
   status="$2"
@@ -7,7 +7,16 @@ else
 fi
 if [ "$3" ]
 then
-  git commit -m "($1) [$status] $3"
+  info=" $3"
 else
-  git commit -m "($1) [$status]"
+  info=""
 fi
+if [ "$4" ]
+then
+  sub="_$4"
+else
+  sub=""
+fi
+
+git add "$prob/Solution$sub.java"
+git commit -m "($prob) [$status]$info"
