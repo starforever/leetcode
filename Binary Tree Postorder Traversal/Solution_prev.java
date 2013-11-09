@@ -10,29 +10,18 @@ public class Solution
     while (!stack.empty())
     {
       TreeNode cur = stack.peek();
+      int flag;
       if (prev == null || prev.left == cur || prev.right == cur)
-      {
-        if (cur.left != null)
-          stack.push(cur.left);
-        else if (cur.right != null)
-          stack.push(cur.right);
-        else
-        {
-          ret.add(cur.val);
-          stack.pop();
-        }
-      }
+        flag = 0;
       else if (prev == cur.left)
-      {
-        if (cur.right != null)
-          stack.push(cur.right);
-        else
-        {
-          ret.add(cur.val);
-          stack.pop();
-        }
-      }
-      else // prev == cur.right
+        flag = 1;
+      else // if (prev == cur.right)
+        flag = 2;
+      if (flag <= 0 && cur.left != null)
+        stack.push(cur.left);
+      else if (flag <= 1 && cur.right != null)
+        stack.push(cur.right);
+      else // if (flag <= 2)
       {
         ret.add(cur.val);
         stack.pop();
