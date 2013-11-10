@@ -35,11 +35,17 @@ public class LRUCache
 
   public void set (int key, int value)
   {
-    if (!pos.containsKey(key))
+    Node p;
+    if (pos.containsKey(key))
     {
-      Node p = new Node(key, value);
+      p = pos.get(key);
+      p.value = value;
+      remove(p);
+    }
+    else
+    {
+      p = new Node(key, value);
       pos.put(key, p);
-      addFront(p);
       ++size;
       if (size > capacity)
       {
@@ -48,13 +54,7 @@ public class LRUCache
         --size;
       }
     }
-    else
-    {
-      Node p = pos.get(key);
-      remove(p);
-      addFront(p);
-      p.value = value;
-    }
+    addFront(p);
   }
 
   void remove (Node p)
