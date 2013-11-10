@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class LRUCache
 {
 
@@ -57,6 +59,17 @@ public class LRUCache
     }
   }
 
+  public void print ()
+  {
+    Node p = head;
+    while (p != null)
+    {
+      System.out.format("(%d,%d)", p.key, p.value);
+      p = p.next;
+    }
+    System.out.println();
+  }
+
   void remove (Node p)
   {
     if (p.prev != null)
@@ -67,6 +80,7 @@ public class LRUCache
       p.next.prev = p.prev;
     else
       tail = p.prev;
+    p.next = p.prev = null;
   }
 
   void addFront (Node p)
@@ -79,6 +93,36 @@ public class LRUCache
     }
     else
       head = tail = p;
+  }
+
+  public static void main (String[] args)
+  {
+    Scanner sc = new Scanner(System.in);
+    LRUCache cache = new LRUCache(sc.nextInt());
+    ArrayList<Integer> res = new ArrayList<Integer>();
+    while (sc.hasNext())
+    {
+      String op = sc.next();
+      int key = sc.nextInt();
+      int value = 0;
+      if (op.equals("get"))
+      {
+        value = cache.get(key);
+        res.add(value);
+      }
+      else if (op.equals("set"))
+      {
+        value = sc.nextInt();
+        cache.set(key, value);
+      }
+      else
+        throw new RuntimeException(String.format("Unknown operation: %s", op));
+      System.out.format("%s %d %d\n", op, key, value);
+      cache.print();
+    }
+    for (Integer val : res)
+      System.out.format("%d,", val);
+    System.out.println();
   }
 
 }
