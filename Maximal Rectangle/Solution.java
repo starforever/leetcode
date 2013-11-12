@@ -5,34 +5,30 @@ public class Solution
     if (matrix == null || matrix.length == 0 || matrix[0].length == 0)
       return 0;
     int N = matrix.length, M = matrix[0].length;
-    int[][] sum = new int[N][M];
-    for (int i = 0; i < N; ++i)
-      for (int j = 0; j < M; ++j)
-      {
-        sum[i][j] = matrix[i][j] == '1' ? 1 : 0;
-        if (i > 0)
-          sum[i][j] += sum[i - 1][j];
-        if (j > 0)
-          sum[i][j] += sum[i][j - 1];
-        if (i > 0 && j > 0)
-          sum[i][j] -= sum[i - 1][j - 1];
-      }
     int maxS = 0;
-    for (int i1 = 0; i1 < N; ++i1)
-      for (int i2 = i1; i2 < N; ++i2)
-        for (int j1 = 0; j1 < M; ++j1)
-          for (int j2 = j1; j2 < M; ++j2)
-          {
-            int s = sum[i2][j2];
-            if (i1 > 0)
-              s -= sum[i1 - 1][j2];
-            if (j1 > 0)
-              s -= sum[i2][j1 - 1];
-            if (i1 > 0 && j1 > 0)
-              s += sum[i1 - 1][j1 - 1];
-            if (s == (i2 - i1 + 1) * (j2 - j1 + 1) && s > maxS)
-              maxS = s;
-          }
+    int[] sum = new int[N];
+    for (int x1 = 0; x1 < M; ++x1)
+    {
+      for (int y = 0; y < N; ++y)
+        sum[y] = 0;
+      for (int x2 = x1; x2 < M; ++x2)
+      {
+        for (int y = 0; y < N; ++y)
+          if (matrix[y][x2] == '1')
+            ++sum[y];
+        int y1 = 0;
+        while (y1 < N)
+        {
+          while (y1 < N && sum[y1] != x2 - x1 + 1)
+            ++y1;
+          int y2 = y1;
+          while (y2 < N && sum[y2] == x2 - x1 + 1)
+            ++y2;
+          maxS = Math.max(maxS, (x2 - x1 + 1) * (y2 - y1));
+          y1 = y2;
+        }
+      }
+    }
     return maxS;
   }
 }
