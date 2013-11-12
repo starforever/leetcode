@@ -14,37 +14,32 @@ public class Solution
       if (numCS[i] >= numCT[i])
         ++match;
     int f = 0, e = 0;
-    while (e < S.length() && match < NUM_CHAR)
+    int minL = Integer.MAX_VALUE;
+    String window = "";
+    while (true)
     {
-      int idx = S.charAt(e);
-      ++numCS[idx];
-      if (numCS[idx] == numCT[idx])
-        ++match;
-      ++e;
-    }
-    if (match < NUM_CHAR)
-      return "";
-    int minL = e - f;
-    String window = S.substring(f, e);
-    while (e < S.length())
-    {
-      int idx = S.charAt(f);
-      if (numCS[idx] == numCT[idx])
-        --match;
-      --numCS[idx];
-      ++f;
-      while (e < S.length() && match < NUM_CHAR)
+      if (match < NUM_CHAR)
       {
-        idx = S.charAt(e);
+        if (e == S.length())
+          break;
+        int idx = S.charAt(e);
         ++numCS[idx];
         if (numCS[idx] == numCT[idx])
           ++match;
         ++e;
       }
-      if (match == NUM_CHAR && e - f < minL)
+      else
       {
-        minL = e - f;
-        window = S.substring(f, e);
+        if (e - f < minL)
+        {
+          minL = e - f;
+          window = S.substring(f, e);
+        }
+        int idx = S.charAt(f);
+        if (numCS[idx] == numCT[idx])
+          --match;
+        --numCS[idx];
+        ++f;
       }
     }
     return window;
