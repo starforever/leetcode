@@ -5,18 +5,12 @@ public class Solution
     if (A == null || A.length == 0)
       return false;
     int N = A.length;
-    boolean[] reach = new boolean[N];
-    reach[N - 1] = true;
+    int last = N - 1;
     for (int i = N - 2; i >= 0; --i)
     {
-      reach[i] = false;
-      for (int j = i + 1; j < N && j - i <= A[i]; ++j)
-        if (reach[j])
-        {
-          reach[i] = true;
-          break;
-        }
+      if (last - i <= A[i])
+        last = i;
     }
-    return reach[0];
+    return last == 0;
   }
 }
