@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class Solution
 {
 
@@ -14,22 +12,12 @@ public class Solution
     return ret;
   }
 
-  String getMinString (String str)
-  {
-    ArrayList<Integer> freq = getCharFreq(str);
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < 26; ++i)
-      for (int j = 0; j < freq.get(i); ++j)
-        sb.append((char)('a' + i));
-    return sb.toString();
-  }
-
   public ArrayList<String> anagrams (String[] strs)
   {
-    HashMap<String, ArrayList<String>> groupTable = new HashMap<String, ArrayList<String>>();
+    HashMap<ArrayList<Integer>, ArrayList<String>> groupTable = new HashMap<ArrayList<Integer>, ArrayList<String>>();
     for (int i = 0; i < strs.length; ++i)
     {
-      String key = getMinString(strs[i]);
+      ArrayList<Integer> key = getCharFreq(strs[i]);
       if (!groupTable.containsKey(key))
         groupTable.put(key, new ArrayList<String>());
       groupTable.get(key).add(strs[i]);
@@ -39,13 +27,6 @@ public class Solution
       if (group.size() > 1)
         ret.addAll(group);
     return ret;
-  }
-
-  public static void main (String[] args)
-  {
-    Solution sol = new Solution();
-    for (String str : sol.anagrams(new String[]{"aabbccdd", "abcdabcd", "ace", "bbccaadd", "aec"}))
-      System.out.println(str);
   }
 
 }
