@@ -1,33 +1,49 @@
 public class Solution
 {
+
+  int C, T;
+  int[] num;
+
+  boolean[][] hasSol;
+
+  ArrayList<ArrayList<Integer>> findSol (int c, int t)
+  {
+    ArrayList<ArrayList<Integer>> ret = new ArrayList<ArrayList<Integer>>();
+    if (t < 0 || !hasSol[c][t])
+      return ret;
+    if (c == 0 && t == 0)
+    {
+      ret.add(new ArrayList<Integer>());
+      return ret;
+    }
+    for (ArrayList<Integer> sol : findSol(c - 1, t))
+      ret.add(sol);
+    for (ArrayList<Integer> sol : findSol(c - 1, t - num[c - 1]))
+    {
+      sol.add(num[c - 1]);
+      ret.add(sol);
+    }
+    return ret;
+  }
+
   public ArrayList<ArrayList<Integer>> combinationSum2 (int[] num, int target)
   {
     if (num == null)
       num = new int[0];
-    int C = num.length, T = target;
+    this.num = num;
+    C = num.length;
+    T = target;
     Arrays.sort(num);
-    ArrayList<ArrayList<Integer>>[][] sumSol = new ArrayList[C + 1][T + 1];
-    for (int t = 0; t <= T; ++t)
-      sumSol[0][t] = new ArrayList<ArrayList<Integer>>();
-    sumSol[0][0].add(new ArrayList<Integer>());
+    hasSol = new boolean[C + 1][T + 1];
+    hasSol[0][0] = true;
+    for (int t = 1; t <= T; ++t)
+      hasSol[0][t] = false;
     for (int c = 1; c <= C; ++c)
     {
       for (int t = 0; t <= T; ++t)
-      {
-        sumSol[c][t] = new ArrayList<ArrayList<Integer>>();
-        for (ArrayList<Integer> sol : sumSol[c - 1][t])
-          sumSol[c][t].add(new ArrayList<Integer>(sol));
-        if (t >= num[c - 1])
-        {
-          for (ArrayList<Integer> sol : sumSol[c - 1][t - num[c - 1]])
-          {
-            ArrayList<Integer> tmp = new ArrayList<Integer>(sol);
-            tmp.add(num[c - 1]);
-            sumSol[c][t].add(tmp);
-          }
-        }
-      }
+        hasSol[c][t] = hasSol[c - 1][t] || t >= num[c - 1] && hasSol[c - 1][t - num[c - 1]];
     }
-    return sumSol[C][T];
+    return findSol(C, T);
   }
+
 }
