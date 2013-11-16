@@ -6,9 +6,9 @@ public class Solution
 
   boolean[][] hasSol;
 
-  ArrayList<ArrayList<Integer>> findSol (int c, int t)
+  HashSet<ArrayList<Integer>> findSol (int c, int t)
   {
-    ArrayList<ArrayList<Integer>> ret = new ArrayList<ArrayList<Integer>>();
+    HashSet<ArrayList<Integer>> ret = new HashSet<ArrayList<Integer>>();
     if (t < 0 || !hasSol[c][t])
       return ret;
     if (c == 0 && t == 0)
@@ -43,7 +43,10 @@ public class Solution
       for (int t = 0; t <= T; ++t)
         hasSol[c][t] = hasSol[c - 1][t] || t >= num[c - 1] && hasSol[c - 1][t - num[c - 1]];
     }
-    return findSol(C, T);
+    ArrayList<ArrayList<Integer>> solList = new ArrayList<ArrayList<Integer>>();
+    for (ArrayList<Integer> sol : findSol(C, T))
+      solList.add(sol);
+    return solList;
   }
 
 }
