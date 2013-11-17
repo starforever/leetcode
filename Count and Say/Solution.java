@@ -7,21 +7,12 @@ public class Solution
     int i = 0;
     while (i < cur.length())
     {
-      if (i + 1 < cur.length() && cur.charAt(i) == '2' && cur.charAt(i + 1) == '1')
-      {
-        sb.append("1211");
-        i += 2;
-      }
-      else if (i + 1 < cur.length() && cur.charAt(i) == '1' && cur.charAt(i + 1) == '1')
-      {
-        sb.append("21");
-        i += 2;
-      }
-      else // if (cur.charAt(i) == '1')
-      {
-        sb.append("11");
-        ++i;
-      }
+      int j = i + 1;
+      while (j < cur.length() && cur.charAt(j) == cur.charAt(i))
+        ++j;
+      sb.append(j - i);
+      sb.append(cur.charAt(i));
+      i = j;
     }
     return sb.toString();
   }
@@ -32,11 +23,9 @@ public class Solution
     int cn = 1;
     while (cn < n)
     {
-      System.out.format("%d: %s\n", cn, cur);
       cur = getNext(cur);
       ++cn;
     }
-    System.out.format("%d: %s\n", cn, cur);
     return cur;
   }
 
