@@ -3,21 +3,20 @@ public class Solution
 
   int N, M;
 
-  HashMap<String, Integer> wordCount;
+  HashMap<String, Integer> wordIndex;
+  int[] wordCount;
 
   boolean isConcatenation (String S)
   {
-    HashMap<String, Integer> wordCount2 = new HashMap<String, Integer>();
+    int[] wordCount2 = new int[wordIndex.size()];
     for (int i = 0; i < N; ++i)
     {
       String word = S.substring(i * M, (i + 1) * M);
-      if (!wordCount.containsKey(word))
+      if (!wordIndex.containsKey(word))
         return false;
-      if (!wordCount2.containsKey(word))
-        wordCount2.put(word, 1);
-      else
-        wordCount2.put(word, wordCount2.get(word) + 1);
-      if (wordCount2.get(word) > wordCount.get(word))
+      int idx = wordIndex.get(word);
+      ++wordCount2[idx];
+      if (wordCount2[idx] > wordCount[idx])
         return false;
     }
     return true;
@@ -30,14 +29,15 @@ public class Solution
       return posList;
     N = L.length;
     M = L[0].length();
-    wordCount = new HashMap<String, Integer>();
+    wordIndex = new HashMap<String, Integer>();
     for (int i = 0; i < N; ++i)
     {
-      if (!wordCount.containsKey(L[i]))
-        wordCount.put(L[i], 1);
-      else
-        wordCount.put(L[i], wordCount.get(L[i]) + 1);
+      if (!wordIndex.containsKey(L[i]))
+        wordIndex.put(L[i], wordIndex.size());
     }
+    wordCount = new int[wordIndex.size()];
+    for (int i = 0; i < N; ++i)
+      ++wordCount[wordIndex.get(L[i])];
     for (int i = 0; i + N * M <= S.length(); ++i)
       if (isConcatenation(S.substring(i, i + N * M)))
         posList.add(i);
