@@ -3,22 +3,22 @@ public class Solution
 
   int N, M;
 
-  HashMap<String, Integer> wordIndex;
-
-  boolean[] present;
+  HashMap<String, Integer> wordCount;
 
   boolean isConcatenation (String S)
   {
-    Arrays.fill(present, false);
+    HashMap<String, Integer> wordCount2 = new HashMap<String, Integer>();
     for (int i = 0; i < N; ++i)
     {
       String word = S.substring(i * M, (i + 1) * M);
-      if (!wordIndex.containsKey(word))
+      if (!wordCount.containsKey(word))
         return false;
-      int idx = wordIndex.get(word);
-      if (present[idx])
+      if (!wordCount2.containsKey(word))
+        wordCount2.put(word, 1);
+      else
+        wordCount2.put(word, wordCount2.get(word) + 1);
+      if (wordCount2.get(word) > wordCount.get(word))
         return false;
-      present[idx] = true;
     }
     return true;
   }
@@ -30,10 +30,14 @@ public class Solution
       return posList;
     N = L.length;
     M = L[0].length();
-    wordIndex = new HashMap<String, Integer>();
+    wordCount = new HashMap<String, Integer>();
     for (int i = 0; i < N; ++i)
-      wordIndex.put(L[i], i);
-    present = new boolean[N];
+    {
+      if (!wordCount.containsKey(L[i]))
+        wordCount.put(L[i], 1);
+      else
+        wordCount.put(L[i], wordCount.get(L[i]) + 1);
+    }
     for (int i = 0; i + N * M <= S.length(); ++i)
       if (isConcatenation(S.substring(i, i + N * M)))
         posList.add(i);
