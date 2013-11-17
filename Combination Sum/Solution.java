@@ -12,9 +12,7 @@ public class Solution
     sumSol[0][0].add(new ArrayList<Integer>());
     for (int c = 1; c <= C; ++c)
     {
-      sumSol[c][0] = new ArrayList<ArrayList<Integer>>();
-      sumSol[c][0].add(new ArrayList<Integer>());
-      for (int t = 1; t <= T; ++t)
+      for (int t = 0; t <= T; ++t)
       {
         sumSol[c][t] = new ArrayList<ArrayList<Integer>>();
         for (ArrayList<Integer> sol : sumSol[c - 1][t])
