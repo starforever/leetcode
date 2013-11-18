@@ -35,15 +35,10 @@ public class Solution
     {
       ListNode[] res = reverse(cur, k);
       if (head == null)
-      {
         head = res[0];
-        tail = res[1];
-      }
       else
-      {
         tail.next = res[0];
-        tail = res[1];
-      }
+      tail = res[1];
       cur = res[2];
     }
     return head;
