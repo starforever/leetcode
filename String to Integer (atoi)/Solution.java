@@ -2,29 +2,29 @@ public class Solution
 {
   public int atoi (String str)
   {
-    if (str == null || str.isEmpty())
-      throw new RuntimeException();
+    if (str == null)
+      return 0;
     int i = 0;
+    while (i < str.length() && str.charAt(i) == ' ')
+      ++i;
     boolean positive = true;
-    while (i < str.length() && str.charAt(i) == '-')
+    if (i < str.length() && (str.charAt(i) == '-' || str.charAt(i) == '+'))
     {
-      positive = !positive;
+      positive = str.charAt(i) == '+';
       ++i;
     }
-    if (i == str.length())
-      throw new RuntimeException();
     long num = 0;
-    while (i < str.length() && num <= -(long)Integer.MIN_VALUE)
+    while (i < str.length() && Character.isDigit(str.charAt(i)) && num <= -(long)Integer.MIN_VALUE)
     {
-      if (!(str.charAt(i) >= '0' && str.charAt(i) <= '9'))
-        throw new RuntimeException();
       num = num * 10 + (str.charAt(i) - '0');
       ++i;
     }
     if (!positive)
       num = -num;
-    if (num < Integer.MIN_VALUE || num > Integer.MAX_VALUE)
-      throw new RuntimeException();
+    if (num < Integer.MIN_VALUE)
+      return Integer.MIN_VALUE;
+    if (num > Integer.MAX_VALUE)
+      return Integer.MAX_VALUE;
     return (int)num;
   }
 }
