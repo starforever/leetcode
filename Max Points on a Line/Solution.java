@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class Solution
 {
 
@@ -81,21 +79,6 @@ public class Solution
       maxLinePoint = Math.max(maxLinePoint, numLinePoint + numSamePoint);
     }
     return maxLinePoint;
-  }
-
-  public static void main (String[] args)
-  {
-    Scanner sc = new Scanner(System.in);
-    ArrayList<Point> pointList = new ArrayList<Point>();
-    while (sc.hasNextInt())
-    {
-      int x = sc.nextInt(), y = sc.nextInt();
-      pointList.add(new Point(x, y));
-    }
-    Point[] points = new Point[pointList.size()];
-    pointList.toArray(points);
-    Solution sol = new Solution();
-    System.out.println(sol.maxPoints(points));
   }
 
 }
