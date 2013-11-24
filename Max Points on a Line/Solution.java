@@ -6,56 +6,25 @@ public class Solution
   class Line
   {
 
-    Point start, diff;
+    int dx, dy;
 
-    public Line (Point p1, Point p2)
+    public Line (int dx, int dy)
     {
-      start = new Point(p1.x , p1.y);
-      diff = new Point(p2.x - p1.x, p2.y - p1.y);
-      normDiff(diff);
-      normStart(start, diff);
-    }
-
-    void normDiff (Point pd)
-    {
-      if (pd.x != 0 && pd.y != 0)
+      if (dy != 0)
       {
-        int g = gcd(Math.abs(pd.x), Math.abs(pd.y));
-        pd.x /= g;
-        pd.y /= g;
-      }
-      else if (pd.x != 0)
-        pd.x = 1;
-      else if (pd.y != 0)
-        pd.y = 1;
-      if (Math.abs(pd.x) >= Math.abs(pd.y) && pd.x < 0 || Math.abs(pd.x) < Math.abs(pd.y) && pd.y < 0)
-      {
-        pd.x = -pd.x;
-        pd.y = -pd.y;
-      }
-    }
-
-    void normStart (Point ps, Point pd)
-    {
-      if (pd.x == 0 && pd.y == 0)
-        return;
-      int k;
-      if (Math.abs(pd.x) >= Math.abs(pd.y))
-      {
-        int sx = ps.x % pd.x;
-        if (sx < 0)
-          sx += pd.x;
-        k = (sx - ps.x) / pd.x;
+        int g = gcd(Math.abs(dx), Math.abs(dy));
+        dx /= g;
+        dy /= g;
       }
       else
+        dx = 1;
+      if (dy < 0)
       {
-        int sy = ps.y % pd.y;
-        if (sy < 0)
-          sy += pd.y;
-        k = (sy - ps.y) / pd.y;
+        dx = -dx;
+        dy = -dy;
       }
-      ps.x += k * pd.x;
-      ps.y += k * pd.y;
+      this.dx = dx;
+      this.dy = dy;
     }
 
     int gcd (int x, int y)
@@ -71,22 +40,12 @@ public class Solution
       if (!(obj instanceof Line))
         return false;
       Line o = (Line)obj;
-      return equals(start, o.start) && equals(diff, o.diff);
-    }
-
-    boolean equals (Point p1, Point p2)
-    {
-      return p1.x == p2.x && p1.y == p2.y;
+      return dx == o.dx && dy == o.dy;
     }
 
     public int hashCode ()
     {
-      return hashCode(start) * hashCode(diff);
-    }
-
-    int hashCode (Point p)
-    {
-      return p.x * p.y;
+      return dx * dy;
     }
 
   }
@@ -96,21 +55,31 @@ public class Solution
     if (points == null)
       return 0;
     int N = points.length;
-    HashMap<Line, HashSet<Integer>> lineTable = new HashMap<Line, HashSet<Integer>>();
+    HashMap<Line, Integer> lineTable = new HashMap<Line, Integer>();
+    int maxLinePoint = 0;
     for (int i = 0; i < N; ++i)
     {
-      for (int j = i; j < N; ++j)
+      lineTable.clear();
+      int numSamePoint = 1;
+      for (int j = i + 1; j < N; ++j)
       {
-        Line line = new Line(points[i], points[j]);
-        if (!lineTable.containsKey(line))
-          lineTable.put(line, new HashSet<Integer>());
-        lineTable.get(line).add(i);
-        lineTable.get(line).add(j);
+        int dx = points[i].x - points[j].x, dy = points[i].y - points[j].y;
+        if (dx == 0 && dy == 0)
+          ++numSamePoint;
+        else
+        {
+          Line line = new Line(dx, dy);
+          if (!lineTable.containsKey(line))
+            lineTable.put(line, 1);
+          else
+            lineTable.put(line, lineTable.get(line) + 1);
+        }
       }
+      int numLinePoint = 0;
+      for (Integer num : lineTable.values())
+        numLinePoint = Math.max(numLinePoint, num);
+      maxLinePoint = Math.max(maxLinePoint, numLinePoint + numSamePoint);
     }
-    int maxLinePoint = 0;
-    for (HashSet<Integer> lineSet : lineTable.values())
-      maxLinePoint = Math.max(maxLinePoint, lineSet.size());
     return maxLinePoint;
   }
 
