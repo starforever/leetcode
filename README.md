@@ -29,6 +29,4 @@ I will merge it into the repo with full attribution once I have them reviewed.
 Problem Status
 --------------
 
-Total: 149, Solved: 149
-
 See this [wiki page](../../wiki/Problem-Status) to view status for each problem.
