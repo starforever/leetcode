@@ -1,28 +1,25 @@
 public class Solution
 {
 
-  class Line
+  static class Line
   {
 
     int dx, dy;
 
     public Line (int dx, int dy)
     {
-      if (dy != 0)
-      {
-        int g = gcd(Math.abs(dx), Math.abs(dy));
-        dx /= g;
-        dy /= g;
-      }
-      else
-        dx = 1;
       if (dy < 0)
       {
         dx = -dx;
         dy = -dy;
       }
-      this.dx = dx;
-      this.dy = dy;
+      int g;
+      if (dx == 0 || dy == 0)
+        g = dx + dy;
+      else
+        g = gcd(Math.abs(dx), Math.abs(dy));
+      this.dx = dx / g;
+      this.dy = dy / g;
     }
 
     int gcd (int x, int y)
@@ -53,11 +50,10 @@ public class Solution
     if (points == null)
       return 0;
     int N = points.length;
-    HashMap<Line, Integer> lineTable = new HashMap<Line, Integer>();
     int maxLinePoint = 0;
     for (int i = 0; i < N; ++i)
     {
-      lineTable.clear();
+      HashMap<Line, Integer> lineTable = new HashMap<Line, Integer>();
       int numSamePoint = 1;
       for (int j = i + 1; j < N; ++j)
       {
