@@ -1,6 +1,13 @@
 public class Solution
 {
 
+  static class InvalidExpression extends RuntimeException
+  {
+    public InvalidExpression ()
+    {
+    }
+  }
+
   enum Operator {ADD, SUBTRACT, MULTIPLY, DIVIDE, UNKNOWN}
 
   Operator getOp (String token)
@@ -48,15 +55,26 @@ public class Solution
       Operator op = getOp(tokens[i]);
       if (op != Operator.UNKNOWN)
       {
+        if (stack.size() < 2)
+          throw new InvalidExpression();
         int b = stack.pop(), a = stack.pop();
         stack.push(eval(a, b, op));
       }
       else
       {
-        stack.push(Integer.parseInt(tokens[i]));
+        try
+        {
+          stack.push(Integer.parseInt(tokens[i]));
+        }
+        catch (NumberFormatException e)
+        {
+          throw new InvalidExpression();
+        }
       }
     }
-    return stack.peek();
+    if (stack.size() != 1)
+      throw new InvalidExpression();
+    return stack.pop();
   }
 
 }
