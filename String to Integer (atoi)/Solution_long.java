@@ -2,24 +2,22 @@ public class Solution
 {
   public int atoi (String str)
   {
-    if (str == null)
-      return 0;
-    int i = 0;
-    while (i < str.length() && str.charAt(i) == ' ')
-      ++i;
-    boolean positive = true;
-    if (i < str.length() && (str.charAt(i) == '-' || str.charAt(i) == '+'))
+    int index = 0;
+    while (index < str.length() && Character.isWhitespace(str.charAt(index)))
+      ++index;
+    boolean isPositive = true;
+    if (index < str.length() && (str.charAt(index) == '-' || str.charAt(index) == '+'))
     {
-      positive = str.charAt(i) == '+';
-      ++i;
+      isPositive = str.charAt(index) == '+';
+      ++index;
     }
     long num = 0;
-    while (i < str.length() && Character.isDigit(str.charAt(i)) && num <= -(long)Integer.MIN_VALUE)
+    while (index < str.length() && Character.isDigit(str.charAt(index)) && num <= -(long)Integer.MIN_VALUE)
     {
-      num = num * 10 + (str.charAt(i) - '0');
-      ++i;
+      num = num * 10 + (str.charAt(index) - '0');
+      ++index;
     }
-    if (!positive)
+    if (!isPositive)
       num = -num;
     if (num < Integer.MIN_VALUE)
       return Integer.MIN_VALUE;
