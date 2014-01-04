@@ -11,4 +11,4 @@ public class UndirectedGraphNode
     neighbors = new ArrayList<UndirectedGraphNode>();
   }
 
-};
+}

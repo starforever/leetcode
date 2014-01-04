@@ -10,4 +10,4 @@ public class RandomListNode
     this.label = x;
   }
 
-};
+}
