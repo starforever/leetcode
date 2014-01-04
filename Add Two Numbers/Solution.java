@@ -6,15 +6,15 @@ public class Solution
       return l2;
     if (l2 == null)
       return l1;
-    ListNode head = null, tail = null;
-    int x = 0;
+    int x = l1.val + l2.val;
+    ListNode head = new ListNode(x % 10), tail = head;
+    x /= 10;
+    l1 = l1.next;
+    l2 = l2.next;
     while (l1 != null && l2 != null)
     {
       x += l1.val + l2.val;
-      if (head == null)
-        head = tail = new ListNode(x % 10);
-      else
-        tail = tail.next = new ListNode(x % 10);
+      tail = tail.next = new ListNode(x % 10);
       x /= 10;
       l1 = l1.next;
       l2 = l2.next;
