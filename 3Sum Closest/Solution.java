@@ -23,7 +23,7 @@ public class Solution
       else
         end = mid;
     }
-    return num[start] <= x ? start : -1;
+    return start;
   }
 
   public int threeSumClosest (int[] num, int target)
@@ -38,24 +38,14 @@ public class Solution
       {
         int x = target - (num[i] + num[j]);
         int k = findBefore(x, j + 1);
-        if (k != -1)
+        if (num[k] <= x && k + 1 < N && num[k + 1] - x < x - num[k])
+          ++k;
+        int sum = num[i] + num[j] + num[k];
+        int diff = Math.abs(target - sum);
+        if (diff < minDiff)
         {
-          int sum = num[i] + num[j] + num[k];
-          if (target - sum < minDiff)
-          {
-            minDiff = target - sum;
-            closestSum = sum;
-          }
-        }
-        k = k != -1 ? k + 1 : j + 1;
-        if (k < N)
-        {
-          int sum = num[i] + num[j] + num[k];
-          if (sum - target < minDiff)
-          {
-            minDiff = sum - target;
-            closestSum = sum;
-          }
+          minDiff = diff;
+          closestSum = sum;
         }
       }
     return closestSum;
