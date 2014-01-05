@@ -1,16 +1,14 @@
 public class Solution
 {
 
-  String[] strs;
-
-  boolean hasSameCharacterAt (int i)
+  boolean hasSameCharacterAt (String[] strs, int pos)
   {
-    if (i >= strs[0].length())
+    if (pos >= strs[0].length())
       return false;
-    char c = strs[0].charAt(i);
-    for (int j = 1; j < strs.length; ++j)
+    char c = strs[0].charAt(pos);
+    for (int i = 1; i < strs.length; ++i)
     {
-      if (i >= strs[j].length() || strs[j].charAt(i) != c)
+      if (pos >= strs[i].length() || strs[i].charAt(pos) != c)
         return false;
     }
     return true;
@@ -18,13 +16,12 @@ public class Solution
 
   public String longestCommonPrefix (String[] strs)
   {
-    if (strs == null || strs.length == 0)
+    if (strs.length == 0)
       return "";
-    this.strs = strs;
-    int i = 0;
-    while (hasSameCharacterAt(i))
-      ++i;
-    return strs[0].substring(0, i);
+    int pos = 0;
+    while (hasSameCharacterAt(strs, pos))
+      ++pos;
+    return strs[0].substring(0, pos);
   }
 
 }
