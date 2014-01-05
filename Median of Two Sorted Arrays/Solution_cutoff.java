@@ -1,7 +1,7 @@
 public class Solution
 {
 
-  int findKth (int k, int[] A, int start1, int len1, int[] B, int start2, int len2)
+  int findKth (int k, int[] A, int startA, int lenA, int[] B, int startB, int lenB)
   {
     if (lenA > lenB)
       return findKth(k, B, startB, lenB, A, startA, lenA);
