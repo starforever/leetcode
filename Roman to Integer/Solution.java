@@ -3,9 +3,9 @@ public class Solution
 
   static final char[] ROMAN_LETTER = new char[]{'I', 'V', 'X', 'L', 'C', 'D', 'M', '?', '?'};
 
-  static final String[] ROMAN_NUMBER = new String[]{"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
+  static final String[] NUMBER_PATTERN = new String[]{"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
 
-  boolean match (String s, String pattern, char one, char five, char ten)
+  boolean isMatch (String s, String pattern, char one, char five, char ten)
   {
     if (s.length() < pattern.length())
       return false;
@@ -22,14 +22,14 @@ public class Solution
     return true;
   }
 
-  int[] match (String s, char one, char five, char ten)
+  int matchPattern (String s, char one, char five, char ten)
   {
     for (int i = 8; i >= 0; --i)
     {
-      if (match(s, ROMAN_NUMBER[i], one, five, ten))
-        return new int[]{i + 1, ROMAN_NUMBER[i].length()};
+      if (isMatch(s, NUMBER_PATTERN[i], one, five, ten))
+        return i;
     }
-    return new int[]{0, 0};
+    return -1;
   }
 
   public int romanToInt (String s)
@@ -40,13 +40,18 @@ public class Solution
     int letterIdx = 6;
     while (unit > 0)
     {
-      int[] res = match(s.substring(start), ROMAN_LETTER[letterIdx], ROMAN_LETTER[letterIdx + 1], ROMAN_LETTER[letterIdx + 2]);
-      num += res[0] * unit;
-      start += res[1];
+      int patternIdx = matchPattern(s.substring(start), ROMAN_LETTER[letterIdx], ROMAN_LETTER[letterIdx + 1], ROMAN_LETTER[letterIdx + 2]);
+      if (patternIdx != -1)
+      {
+        num += (patternIdx + 1) * unit;
+        start += NUMBER_PATTERN[patternIdx].length();
+      }
       unit /= 10;
       letterIdx -= 2;
     }
-    return start == s.length() ? num : -1;
+    if (start < s.length())
+      throw new RuntimeException();
+    return num;
   }
 
 }
