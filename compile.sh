@@ -12,4 +12,7 @@ else
   sub=""
 fi
 
-javac -classpath util "$prob/Solution$sub.java"
+cat - "$prob/Solution$sub.java" <<< "import java.util.*;
+" > Solution.java
+javac -classpath util Solution.java
+rm Solution.java Solution.class
