@@ -17,15 +17,12 @@ public class Solution
   int unique (int[] num)
   {
     Arrays.sort(num);
-    int i = 0;
-    int n = 0;
+    int i = 0, n = 0;
     while (i < num.length)
     {
       num[n++] = num[i];
-      int j = i + 1;
-      while (j < num.length && num[j] == num[i])
-        ++j;
-      i = j;
+      while (i < num.length && num[i] == num[n - 1])
+        ++i;
     }
     return n;
   }
