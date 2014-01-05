@@ -3,19 +3,26 @@ public class Solution
 
   int N;
   int[] num;
+  HashMap<Integer, Integer> numCount;
+  HashMap<Integer, ArrayList<int[]>> sumPair;
 
-  int next (int i)
+  int unique (int[] num)
   {
-    int j = i + 1;
-    while (j < N && num[j] == num[i])
-      ++j;
-    return j;
+    Arrays.sort(num);
+    int i = 0, n = 0;
+    while (i < num.length)
+    {
+      num[n++] = num[i];
+      while (i < num.length && num[i] == num[n - 1])
+        ++i;
+    }
+    return n;
   }
 
   HashMap<Integer, Integer> calcNumCount ()
   {
     HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
-    for (int i = 0; i < N; ++i)
+    for (int i = 0; i < num.length; ++i)
     {
       if (!numCount.containsKey(num[i]))
         numCount.put(num[i], 1);
@@ -28,29 +35,32 @@ public class Solution
   HashMap<Integer, ArrayList<int[]>> calcSumPair ()
   {
     HashMap<Integer, ArrayList<int[]>> sumPair = new HashMap<Integer, ArrayList<int[]>>();
-    for (int i = 0; i < N; i = next(i))
-      for (int j = i + 1; j < N; j = next(j))
+    for (int i = 0; i < N; ++i)
+    {
+      int a = num[i];
+      for (int j = i + (numCount.get(a) == 1 ? 1 : 0); j < N; ++j)
       {
-        int x = num[i] + num[j];
+        int b = num[j];
+        int x = a + b;
         if (!sumPair.containsKey(x))
           sumPair.put(x, new ArrayList<int[]>());
-        sumPair.get(x).add(new int[]{num[i], num[j]});
+        sumPair.get(x).add(new int[]{a, b});
       }
+    }
     return sumPair;
   }
 
   public ArrayList<ArrayList<Integer>> fourSum (int[] num, int target)
   {
-    N = num.length;
     this.num = num;
-    Arrays.sort(num);
-    HashMap<Integer, Integer> numCount = calcNumCount();
-    HashMap<Integer, ArrayList<int[]>> sumPair = calcSumPair();
+    numCount = calcNumCount();
+    N = unique(num);
+    sumPair = calcSumPair();
     ArrayList<ArrayList<Integer>> solList = new ArrayList<ArrayList<Integer>>();
-    for (int i = 0; i < N; i = next(i))
+    for (int i = 0; i < N; ++i)
     {
       int a = num[i];
-      for (int j = i + 1; j < N; j = next(j))
+      for (int j = i + (numCount.get(a) == 1 ? 1 : 0); j < N; ++j)
       {
         int b = num[j];
         int x = target - (a + b);
@@ -61,17 +71,8 @@ public class Solution
           int c = cd[0], d = cd[1];
           if (c < b)
             continue;
-          int needC, needD;
-          if (c > b)
-            needC = 1;
-          else if (b > a)
-            needC = 2;
-          else
-            needC = 3;
-          if (d > c)
-            needD = 1;
-          else
-            needD = needC + 1;
+          int needC = 1 + ((c == b) ? 1 : 0) + ((c == a) ? 1 : 0);
+          int needD = 1 + ((d == c) ? needC : 0);
           if (numCount.get(c) >= needC && numCount.get(d) >= needD)
             solList.add(new ArrayList<Integer>(Arrays.asList(a, b, c, d)));
         }
