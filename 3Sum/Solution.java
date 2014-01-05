@@ -1,19 +1,6 @@
 public class Solution
 {
 
-  HashMap<Integer, Integer> calcNumCount (int[] num)
-  {
-    HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
-    for (int i = 0; i < num.length; ++i)
-    {
-      if (!numCount.containsKey(num[i]))
-        numCount.put(num[i], 1);
-      else
-        numCount.put(num[i], numCount.get(num[i]) + 1);
-    }
-    return numCount;
-  }
-
   int unique (int[] num)
   {
     Arrays.sort(num);
@@ -25,6 +12,19 @@ public class Solution
         ++i;
     }
     return n;
+  }
+
+  HashMap<Integer, Integer> calcNumCount (int[] num)
+  {
+    HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
+    for (int i = 0; i < num.length; ++i)
+    {
+      if (!numCount.containsKey(num[i]))
+        numCount.put(num[i], 1);
+      else
+        numCount.put(num[i], numCount.get(num[i]) + 1);
+    }
+    return numCount;
   }
 
   public ArrayList<ArrayList<Integer>> threeSum (int[] num)
@@ -43,8 +43,8 @@ public class Solution
           continue;
         if (!numCount.containsKey(c))
           continue;
-        int leastCnt = 1 + ((c == b) ? 1 : 0) + ((c == a) ? 1 : 0);
-        if (numCount.get(c) >= leastCnt)
+        int needC = 1 + ((c == b) ? 1 : 0) + ((c == a) ? 1 : 0);
+        if (numCount.get(c) >= needC)
           solList.add(new ArrayList<Integer>(Arrays.asList(a, b, c)));
       }
     }
