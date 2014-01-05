@@ -3,11 +3,11 @@ public class Solution
 
   static final char[] ROMAN_LETTER = new char[]{'I', 'V', 'X', 'L', 'C', 'D', 'M', '?', '?'};
 
-  static final String[] ROMAN_NUMBER = new String[]{"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
+  static final String[] NUMBER_PATTERN = new String[]{"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
 
   String romanDigit (int digit, char one, char five, char ten)
   {
-    String pattern = ROMAN_NUMBER[digit - 1];
+    String pattern = NUMBER_PATTERN[digit - 1];
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < pattern.length(); ++i)
     {
