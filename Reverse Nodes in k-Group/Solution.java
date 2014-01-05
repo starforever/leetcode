@@ -1,47 +1,41 @@
 public class Solution
 {
-
-  ListNode[] reverse (ListNode cur, int k)
-  {
-    ListNode head = cur, tail = null;
-    while (k > 0 && cur != null)
-    {
-      --k;
-      tail = cur;
-      cur = cur.next;
-    }
-    if (k > 0)
-      return new ListNode[]{head, tail, null};
-    ListNode next = cur, prev = null;
-    tail = cur = head;
-    while (cur != next)
-    {
-      ListNode tmp = cur.next;
-      cur.next = prev;
-      prev = cur;
-      cur = tmp;
-    }
-    head = prev;
-    return new ListNode[]{head, tail, next};
-  }
-
   public ListNode reverseKGroup (ListNode head, int k)
   {
     if (k == 0)
-      return head;
-    ListNode cur = head, tail = null;
-    head = null;
-    while (cur != null)
+      throw new RuntimeException();
+    ListNode cur = head, last = null, next = head;
+    int ahead = 0;
+    while (ahead < k && next != null)
     {
-      ListNode[] res = reverse(cur, k);
-      if (head == null)
-        head = res[0];
-      else
-        tail.next = res[0];
-      tail = res[1];
-      cur = res[2];
+      ++ahead;
+      next = next.next;
     }
+    while (ahead == k)
+    {
+      ListNode prev = cur, nlast = cur;
+      cur = cur.next;
+      while (cur != next)
+      {
+        ListNode ncur = cur.next;
+        cur.next = prev;
+        prev = cur;
+        cur = ncur;
+      }
+      if (last != null)
+        last.next = prev;
+      else
+        head = prev;
+      last = nlast;
+      ahead = 0;
+      while (ahead < k && next != null)
+      {
+        ++ahead;
+        next = next.next;
+      }
+    }
+    if (last != null)
+      last.next = cur;
     return head;
   }
-
 }
