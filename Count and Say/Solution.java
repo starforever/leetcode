@@ -19,14 +19,13 @@ public class Solution
 
   public String countAndSay (int n)
   {
-    String cur = "1";
-    int cn = 1;
-    while (cn < n)
+    String seq = "1";
+    while (n > 1)
     {
-      cur = getNext(cur);
-      ++cn;
+      seq = getNext(seq);
+      --n;
     }
-    return cur;
+    return seq;
   }
 
 }
