@@ -18,7 +18,7 @@ public class Solution
 
   public void nextPermutation (int[] num)
   {
-    if (num == null || num.length < 2)
+    if (num.length == 0)
       return;
     this.num = num;
     int N = num.length;
