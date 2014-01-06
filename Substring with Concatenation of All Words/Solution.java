@@ -25,7 +25,7 @@ public class Solution
   public ArrayList<Integer> findSubstring (String S, String[] L)
   {
     ArrayList<Integer> posList = new ArrayList<Integer>();
-    if (S == null || S.isEmpty() || L == null || L.length == 0 || L[0].isEmpty())
+    if (L.length == 0)
       return posList;
     N = L.length;
     M = L[0].length();
