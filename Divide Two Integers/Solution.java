@@ -1,30 +1,23 @@
 public class Solution
 {
 
-  int bitSize (long num)
+  int bitSize (int num)
   {
-    int n = 0;
-    while (num > 0)
-    {
-      ++n;
-      num >>= 1;
-    }
+    int n = 31;
+    while (n > 0 && (num & 1 << n) == 0)
+      --n;
     return n;
   }
 
-  long divide (long dividend, long divisor)
+  int dividePositive (int dividend, int divisor)
   {
-    if (divisor == 0)
-      throw new RuntimeException();
-    if (dividend < divisor)
-      return 0;
     int n1 = bitSize(dividend), n2 = bitSize(divisor);
-    long quotient = 0;
+    int quotient = 0;
     for (int i = n1 - n2; i >= 0; --i)
     {
-      if (divisor << i <= dividend)
+      if (dividend - (divisor << i) >= 0)
       {
-        quotient |= 1L << i;
+        quotient |= 1 << i;
         dividend -= divisor << i;
       }
     }
@@ -33,10 +26,12 @@ public class Solution
 
   public int divide (int dividend, int divisor)
   {
-    long quotient = divide(Math.abs((long)dividend), Math.abs((long)divisor));
+    if (divisor == 0)
+      throw new RuntimeException();
+    int quotient = dividePositive(Math.abs(dividend), Math.abs(divisor));
     if (((dividend ^ divisor) & 1 << 31) != 0)
       quotient = -quotient;
-    return (int)quotient;
+    return quotient;
   }
 
 }
