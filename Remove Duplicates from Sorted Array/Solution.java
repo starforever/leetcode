@@ -2,15 +2,12 @@ public class Solution
 {
   public int removeDuplicates (int[] A)
   {
-    int n = 0;
-    int i = 0;
+    int n = 0, i = 0;
     while (i < A.length)
     {
-      int j = i + 1;
-      while (j < A.length && A[j] == A[i])
-        ++j;
       A[n++] = A[i];
-      i = j;
+      while (i < A.length && A[i] == A[n - 1])
+        ++i;
     }
     return n;
   }
