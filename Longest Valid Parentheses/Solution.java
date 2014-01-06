@@ -2,12 +2,9 @@ public class Solution
 {
   public int longestValidParentheses (String s)
   {
-    if (s == null || s.isEmpty())
-      return 0;
     int N = s.length();
     int[] start = new int[2 * N + 1];
-    for (int i = 0; i <= 2 * N; ++i)
-      start[i] = -1;
+    Arrays.fill(start, -1);
     start[N] = 0;
     int level = 0;
     int maxLength = 0;
@@ -15,7 +12,7 @@ public class Solution
     {
       if (s.charAt(i) == '(')
         ++level;
-      else
+      else // if (s.charAt(i) == ')')
       {
         start[level + N] = -1;
         --level;
