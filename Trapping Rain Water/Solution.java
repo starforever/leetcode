@@ -1,39 +1,37 @@
 public class Solution
 {
 
-  static class Column
+  static class Segment
   {
-    int idx;
     int level;
+    int length;
 
-    public Column (int idx, int level)
+    public Segment (int level, int length)
     {
-      this.idx = idx;
       this.level = level;
+      this.length = length;
     }
   }
 
   public int trap (int[] A)
   {
-    if (A == null)
-      return 0;
-    int N = A.length;
-    Stack<Column> stack = new Stack<Column>();
-    int water = 0;
-    for (int i = 0; i < N; ++i)
+    Stack<Segment> stack = new Stack<Segment>();
+    int highest = 0;
+    int total = 0;
+    for (int i = 0; i < A.length; ++i)
     {
-      Column last = null;
-      while (!stack.empty() && A[i] >= stack.peek().level)
+      int newLevel = Math.min(A[i], highest);
+      highest = Math.max(highest, A[i]);
+      int sumLength = 0;
+      while (!stack.empty() && stack.peek().level <= A[i])
       {
-        if (last != null)
-          water += (stack.peek().level - last.level) * (i - 1 - stack.peek().idx);
-        last = stack.pop();
+        total += stack.peek().length * (newLevel - stack.peek().level);
+        sumLength += stack.peek().length;
+        stack.pop();
       }
-      if (!stack.empty() && last != null)
-        water += (A[i] - last.level) * (i - 1 - stack.peek().idx);
-      stack.push(new Column(i, A[i]));
+      stack.push(new Segment(A[i], sumLength + 1));
     }
-    return water;
+    return total;
   }
 
 }
