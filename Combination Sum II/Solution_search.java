@@ -10,7 +10,7 @@ public class Solution
 
   void uniqueCount ()
   {
-    Arrays.sort(num);
+    count = new int[num.length];
     Arrays.fill(count, 0);
     N = 0;
     int i = 0;
@@ -47,7 +47,7 @@ public class Solution
   public ArrayList<ArrayList<Integer>> combinationSum2 (int[] num, int target)
   {
     this.num = num;
-    count = new int[num.length];
+    Arrays.sort(num);
     uniqueCount();
     solList = new ArrayList<ArrayList<Integer>>();
     curSol = new Stack<Integer>();
