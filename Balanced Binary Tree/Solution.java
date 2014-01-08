@@ -19,4 +19,5 @@ public class Solution
     getDepth(root);
     return check;
   }
+
 }
