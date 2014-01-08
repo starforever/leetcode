@@ -5,24 +5,23 @@ public class Solution
   int[] inorder;
   int[] postorder;
 
-  HashMap<Integer, Integer> inPos;
-
-  int postNext;
+  HashMap<Integer, Integer> pos;
+  int next;
 
   void buildPos ()
   {
-    inPos = new HashMap<Integer, Integer>();
+    pos = new HashMap<Integer, Integer>();
     for (int i = 0; i < N; ++i)
-      inPos.put(inorder[i], i);
+      pos.put(inorder[i], i);
   }
 
   TreeNode construct (int start, int end)
   {
     if (end - start == 0)
       return null;
-    int cur = postorder[--postNext];
+    int cur = postorder[next--];
     TreeNode root = new TreeNode(cur);
-    int mid = inPos.get(cur);
+    int mid = pos.get(cur);
     root.right = construct(mid + 1, end);
     root.left = construct(start, mid);
     return root;
@@ -30,13 +29,11 @@ public class Solution
 
   public TreeNode buildTree (int[] inorder, int[] postorder)
   {
-    if (inorder == null || postorder == null)
-      return null;
     N = inorder.length;
     this.inorder = inorder;
     this.postorder = postorder;
     buildPos();
-    postNext = N;
+    next = N - 1;
     return construct(0, N);
   }
 
