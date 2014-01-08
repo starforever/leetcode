@@ -26,4 +26,5 @@ public class Solution
       return;
     flattenTree(root);
   }
+
 }
