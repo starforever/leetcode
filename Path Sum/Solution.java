@@ -1,6 +1,5 @@
 public class Solution
 {
-
   public boolean hasPathSum (TreeNode root, int sum)
   {
     if (root == null)
@@ -9,5 +8,4 @@ public class Solution
       return root.val == sum;
     return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
   }
-
 }
