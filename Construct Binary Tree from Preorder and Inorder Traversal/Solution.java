@@ -6,8 +6,14 @@ public class Solution
   int[] inorder;
 
   HashMap<Integer, Integer> pos;
-
   int next;
+
+  void buildPos ()
+  {
+    pos = new HashMap<Integer, Integer>();
+    for (int i = 0; i < N; ++i)
+      pos.put(inorder[i], i);
+  }
 
   TreeNode construct (int start, int end)
   {
@@ -21,17 +27,8 @@ public class Solution
     return root;
   }
 
-  void buildPos ()
-  {
-    pos = new HashMap<Integer, Integer>();
-    for (int i = 0; i < N; ++i)
-      pos.put(inorder[i], i);
-  }
-
   public TreeNode buildTree (int[] preorder, int[] inorder)
   {
-    if (preorder == null || inorder == null)
-      return null;
     N = preorder.length;
     this.preorder = preorder;
     this.inorder = inorder;
@@ -39,4 +36,5 @@ public class Solution
     next = 0;
     return construct(0, N);
   }
+
 }
