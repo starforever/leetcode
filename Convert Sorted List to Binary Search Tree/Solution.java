@@ -13,6 +13,17 @@ public class Solution
     }
   }
 
+  int getLength (ListNode head)
+  {
+    int len = 0;
+    while (head != null)
+    {
+      ++len;
+      head = head.next;
+    }
+    return len;
+  }
+
   Result convert (ListNode cur, int len)
   {
     if (len == 0)
@@ -28,19 +39,9 @@ public class Solution
     return new Result(p, r2.next);
   }
 
-  int getLength (ListNode head)
-  {
-    int len = 0;
-    while (head != null)
-    {
-      ++len;
-      head = head.next;
-    }
-    return len;
-  }
-
   public TreeNode sortedListToBST (ListNode head)
   {
     return convert(head, getLength(head)).root;
   }
+
 }
