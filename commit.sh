@@ -1,28 +1,39 @@
 if [ "$1" ]
 then
-  prob="$1"
+  probid="$1"
 else
-  echo "Problem name required."
+  echo "Problem ID required."
   exit
 fi
+
 if [ "$2" ]
 then
-  sub="_$2"
+  title="$2"
+else
+  echo "Problem title required."
+  exit
+fi
+
+if [ "$3" ]
+then
+  sub="_$3"
 else
   sub=""
 fi
-if [ "$3" ]
+
+if [ "$4" ]
 then
-  status="$3"
+  status="$4"
 else
   status="Accepted"
 fi
-if [ "$4" ]
+
+if [ "$5" ]
 then
-  info=" $4"
+  info=" $5"
 else
   info=""
 fi
 
-git add "$prob/Solution$sub.java"
-git commit -m "($prob) [$status]$info"
+git add "$probid/Solution$sub.java"
+git commit -m "($title) [$status]$info"

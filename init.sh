@@ -1,19 +1,20 @@
 if [ "$1" ]
 then
-  prob="$1"
+  probid="$1"
 else
-  echo "Problem name required."
+  echo "Problem ID required."
   exit
 fi
+
 if [ "$2" ]
 then
-  sub="_$2"
+  sub1="_$2"
   sub2=" ($2)"
 else
-  sub=""
+  sub1=""
   sub2=""
 fi
 
-mkdir -p "$prob"
-touch "$prob/Solution$sub.java"
-echo "Initialized $prob$sub2."
+mkdir -p "$probid"
+touch "$probid/Solution$sub1.java"
+echo "Initialized problem with ID $probid$sub2."
