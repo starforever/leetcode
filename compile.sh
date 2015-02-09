@@ -16,4 +16,4 @@ fi
 cat - "$probid/Solution$sub.java" <<< "import java.util.*;
 " > Solution.java
 javac -classpath util Solution.java
-rm Solution.java Solution.class
+rm Solution.java *.class
