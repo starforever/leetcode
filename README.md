@@ -8,7 +8,7 @@ All the solutions are written in Java.
 Organization
 ------------
 
-The solutions to a given problem are put in a separate folder bearing the same name as that problem.
+The solutions to a given problem are put in a separate folder with the name of the ID of that problem.
 For most of the problems, there is a single solution in a file named `Solution.java`.
 For some problems, there exist multiple solutions in files `Solution_<method>.java`, where `<method>` is a descriptive keyword to distinguish different approaches.
 
