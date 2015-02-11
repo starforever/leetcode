@@ -35,5 +35,6 @@ else
   info=""
 fi
 
+chmod 644 "$probid/Solution$sub.java"
 git add "$probid/Solution$sub.java"
 git commit -m "($title) [$status]$info"
