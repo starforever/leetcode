@@ -1,21 +1,23 @@
 public class TwoSum
 {
-  private HashSet<Integer> sumSet = new HashSet<Integer>();
-  private ArrayList<Integer> numList = new ArrayList<Integer>();
+  private HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
 
   public void add (int number)
   {
-    for (int i = 0; i < numList.size(); ++i)
-    {
-      long sum = (long)number + (long)numList.get(i);
-      if (sum >= Integer.MIN_VALUE && sum <= Integer.MAX_VALUE)
-        sumSet.add((int)sum);
-    }
-    numList.add(number);
+    if (!numCount.containsKey(number))
+      numCount.put(number, 1);
+    else
+      numCount.put(number, numCount.get(number) + 1);
   }
 
   public boolean find (int value)
   {
-    return sumSet.contains(value);
+    for (int num : numCount.keySet())
+    {
+      long x = (long)value - (long)num;
+      if (x >= Integer.MIN_VALUE && x <= Integer.MAX_VALUE && numCount.containsKey((int)x) && numCount.get((int)x) >= (x == num ? 2 : 1))
+        return true;
+    }
+    return false;
   }
 }
