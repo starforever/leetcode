@@ -17,38 +17,35 @@ public class Solution
     }
     int integral = numerator / denominator;
     int remainder = numerator % denominator;
-    int[] index = new int[denominator];
-    for (int i = 0; i < denominator; ++i)
-      index[i] = -1;
-    int[] frac = new int[denominator];
-    int numFrac = 0;
-    while (remainder > 0 && index[remainder] == -1)
+    HashMap<Integer, Integer> index = new HashMap<Integer, Integer>();
+    ArrayList<Integer> frac = new ArrayList<Integer>();
+    while (remainder > 0 && !index.containsKey(remainder))
     {
-      index[remainder] = numFrac;
+      index.put(remainder, frac.size());
       remainder *= 10;
-      frac[numFrac++] = remainder / denominator;
+      frac.add(remainder / denominator);
       remainder %= denominator;
     }
     StringBuilder sb = new StringBuilder();
     if (isNegative)
       sb.append("-");
     sb.append(integral);
-    if (numFrac > 0)
+    if (frac.size() > 0)
     {
       sb.append(".");
       if (remainder == 0)
       {
-        for (int i = 0; i < numFrac; ++i)
-          sb.append(frac[i]);
+        for (int i = 0; i < frac.size(); ++i)
+          sb.append(frac.get(i));
       }
       else
       {
-        int split = index[remainder];
+        int split = index.get(remainder);
         for (int i = 0; i < split; ++i)
-          sb.append(frac[i]);
+          sb.append(frac.get(i));
         sb.append("(");
-        for (int i = split; i < numFrac; ++i)
-          sb.append(frac[i]);
+        for (int i = split; i < frac.size(); ++i)
+          sb.append(frac.get(i));
         sb.append(")");
       }
     }
