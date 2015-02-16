@@ -1,48 +1,58 @@
 public class Solution
 {
-  public String fractionToDecimal (int numerator, int denominator)
+  private String fractionToDecimal (long numerator, long denominator)
   {
-    if (denominator == 0)
-      throw new ArithmeticException();
     boolean isNegative = false;
     if (numerator < 0)
-      isNegative = !isNegative;
-    if (denominator < 0)
-      isNegative = !isNegative;
-    int integral = numerator / denominator;
-    int remainder = Math.abs(numerator % denominator);
-    HashMap<Integer, Integer> index = new HashMap<Integer, Integer>();
-    ArrayList<Integer> frac = new ArrayList<Integer>();
-    while (remainder > 0 && !index.containsKey(remainder))
     {
-      index.put(remainder, frac.size());
+      isNegative = !isNegative;
+      numerator = -numerator;
+    }
+    if (denominator < 0)
+    {
+      isNegative = !isNegative;
+      denominator = -denominator;
+    }
+    long integral = numerator / denominator;
+    long remainder = numerator % denominator;
+    HashMap<Integer, Integer> index = new HashMap<Integer, Integer>();
+    StringBuilder frac = new StringBuilder();
+    while (remainder > 0 && !index.containsKey((int)remainder))
+    {
+      index.put((int)remainder, frac.length());
       remainder *= 10;
-      frac.add(Math.abs(remainder / denominator));
-      remainder = Math.abs(remainder % denominator);
+      frac.append(remainder / denominator);
+      remainder %= denominator;
     }
     StringBuilder sb = new StringBuilder();
-    if (integral == 0 && isNegative && frac.size() > 0)
+    if (isNegative)
       sb.append("-");
     sb.append(integral);
-    if (frac.size() > 0)
+    if (frac.length() > 0)
     {
       sb.append(".");
       if (remainder == 0)
       {
-        for (int i = 0; i < frac.size(); ++i)
-          sb.append(frac.get(i));
+        sb.append(frac);
       }
       else
       {
-        int split = index.get(remainder);
-        for (int i = 0; i < split; ++i)
-          sb.append(frac.get(i));
+        int split = index.get((int)remainder);
+        sb.append(frac.substring(0, split));
         sb.append("(");
-        for (int i = split; i < frac.size(); ++i)
-          sb.append(frac.get(i));
+        sb.append(frac.substring(split));
         sb.append(")");
       }
     }
     return sb.toString();
+  }
+
+  public String fractionToDecimal (int numerator, int denominator)
+  {
+    if (denominator == 0)
+      throw new ArithmeticException();
+    if (numerator == 0)
+      return "0";
+    return fractionToDecimal((long)numerator, (long)denominator);
   }
 }
