@@ -6,28 +6,22 @@ public class Solution
       throw new ArithmeticException();
     boolean isNegative = false;
     if (numerator < 0)
-    {
-      numerator = -numerator;
       isNegative = !isNegative;
-    }
     if (denominator < 0)
-    {
-      denominator = -denominator;
       isNegative = !isNegative;
-    }
     int integral = numerator / denominator;
-    int remainder = numerator % denominator;
+    int remainder = Math.abs(numerator % denominator);
     HashMap<Integer, Integer> index = new HashMap<Integer, Integer>();
     ArrayList<Integer> frac = new ArrayList<Integer>();
     while (remainder > 0 && !index.containsKey(remainder))
     {
       index.put(remainder, frac.size());
       remainder *= 10;
-      frac.add(remainder / denominator);
-      remainder %= denominator;
+      frac.add(Math.abs(remainder / denominator));
+      remainder = Math.abs(remainder % denominator);
     }
     StringBuilder sb = new StringBuilder();
-    if (isNegative)
+    if (integral == 0 && isNegative && frac.size() > 0)
       sb.append("-");
     sb.append(integral);
     if (frac.size() > 0)
