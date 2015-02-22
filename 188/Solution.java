@@ -3,20 +3,21 @@ public class Solution
   public int maxProfit (int K, int[] prices)
   {
     int N = prices.length;
-    K = Math.min(K, N / 2);
-    int[][] gain = new int[N + 1][K + 1];
-    for (int j = 0; j <= K; ++j)
-      gain[N][j] = 0;
-    for (int i = N - 1; i >= 0; --i)
+    ArrayList<Integer> gains = new ArrayList<Integer>();
+    int i = 0;
+    while (i + 1 < N)
     {
-      gain[i][K] = 0;
-      for (int j = K - 1; j >= 0; --j)
-      {
-        gain[i][j] = gain[i + 1][j];
-        for (int k = i + 1; k < N; ++k)
-          gain[i][j] = Math.max(gain[i][j], prices[k] - prices[i] + gain[k + 1][j + 1]);
-      }
+      while (i + 1 < N && prices[i + 1] <= prices[i])
+        ++i;
+      int j = i;
+      while (i + 1 < N && prices[i + 1] > prices[i])
+        ++i;
+      gains.add(prices[i] - prices[j]);
     }
-    return gain[0][0];
+    Collections.sort(gains);
+    int totalGain = 0;
+    for (i = gains.size() - 1; i >= 0 && i >= gains.size() - K; --i)
+      totalGain += gains.get(i);
+    return totalGain;
   }
 }
