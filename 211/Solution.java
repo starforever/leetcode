@@ -27,20 +27,23 @@ public class WordDictionary
   {
     if (idx == word.length())
       return cur.finish;
-    while (idx < word.length() && word.charAt(idx) != '.')
+    char c = word.charAt(idx);
+    if (c == '.')
     {
-      cur = cur.next.get(word.charAt(idx++));
-      if (cur == null)
+      for (TrieNode r : cur.next.values())
+      {
+        if (match(r, idx + 1, word))
+          return true;
+      }
+      return false;
+    }
+    else
+    {
+      TrieNode p = cur.next.get(c);
+      if (p == null)
         return false;
+      return match(p, idx + 1, word);
     }
-    if (idx == word.length())
-      return cur.finish;
-    for (TrieNode r : cur.next.values())
-    {
-      if (match(r, idx + 1, word))
-        return true;
-    }
-    return false;
   }
 
   public boolean search (String word)
