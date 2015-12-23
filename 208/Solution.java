@@ -1,12 +1,12 @@
 class TrieNode
 {
-  private boolean end;
-  private HashMap<Character, TrieNode> next;
+  private boolean end = false;
+  private TrieNode[] next;
 
   public TrieNode ()
   {
     end = false;
-    next = new HashMap<Character, TrieNode>();
+    next = new TrieNode[26];
   }
 
   public void setEnd ()
@@ -21,12 +21,12 @@ class TrieNode
 
   public void setNext (char c)
   {
-    next.put(c, new TrieNode());
+    next[c - 'a'] = new TrieNode();
   }
 
   public TrieNode getNext (char c)
   {
-    return next.get(c);
+    return next[c - 'a'];
   }
 }
 

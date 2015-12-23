@@ -1,7 +1,7 @@
 class TrieNode
 {
   boolean finish = false;
-  HashMap<Character, TrieNode> next = new HashMap<Character, TrieNode>();
+  TrieNode[] next = new TrieNode[26];
 }
 
 public class WordDictionary
@@ -16,9 +16,9 @@ public class WordDictionary
     for (int i = 0; i < word.length(); ++i)
     {
       char c = word.charAt(i);
-      if (p.next.get(c) == null)
-        p.next.put(c, new TrieNode());
-      p = p.next.get(c);
+      if (p.next[c - 'a'] == null)
+        p.next[c - 'a'] = new TrieNode();
+      p = p.next[c - 'a'];
     }
     p.finish = true;
   }
@@ -30,16 +30,16 @@ public class WordDictionary
     char c = word.charAt(idx);
     if (c == '.')
     {
-      for (TrieNode r : cur.next.values())
+      for (int i = 0; i < 26; ++i)
       {
-        if (match(r, idx + 1, word))
+        if (cur.next[i] != null && match(cur.next[i], idx + 1, word))
           return true;
       }
       return false;
     }
     else
     {
-      TrieNode p = cur.next.get(c);
+      TrieNode p = cur.next[c - 'a'];
       if (p == null)
         return false;
       return match(p, idx + 1, word);
