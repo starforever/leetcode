@@ -9,7 +9,7 @@ public class Solution
 
   boolean[][] hasSol;
 
-  ArrayList<ArrayList<Integer>> solList;
+  List<List<Integer>> solList;
   Stack<Integer> curSol;
 
   void calcHasSol ()
@@ -64,14 +64,14 @@ public class Solution
       curSol.pop();
   }
 
-  public ArrayList<ArrayList<Integer>> combinationSum2 (int[] num, int target)
+  public List<List<Integer>> combinationSum2 (int[] candidates, int target)
   {
     this.T = target;
-    this.num = num;
+    this.num = candidates;
     Arrays.sort(num);
     calcHasSol();
     uniqueCount();
-    solList = new ArrayList<ArrayList<Integer>>();
+    solList = new ArrayList<List<Integer>>();
     curSol = new Stack<Integer>();
     search(0, 0, target);
     return solList;

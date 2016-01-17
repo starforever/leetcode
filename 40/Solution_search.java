@@ -5,7 +5,7 @@ public class Solution
   int[] num;
   int[] count;
 
-  ArrayList<ArrayList<Integer>> solList;
+  List<List<Integer>> solList;
   Stack<Integer> curSol;
 
   void uniqueCount ()
@@ -44,12 +44,12 @@ public class Solution
       curSol.pop();
   }
 
-  public ArrayList<ArrayList<Integer>> combinationSum2 (int[] num, int target)
+  public List<List<Integer>> combinationSum2 (int[] candidates, int target)
   {
-    this.num = num;
+    this.num = candidates;
     Arrays.sort(num);
     uniqueCount();
-    solList = new ArrayList<ArrayList<Integer>>();
+    solList = new ArrayList<List<Integer>>();
     curSol = new Stack<Integer>();
     search(0, target);
     return solList;
