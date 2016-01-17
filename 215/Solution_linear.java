@@ -4,32 +4,30 @@ public class Solution
 {
   private Random rand = new Random();
 
-  private int find (int[] nums, int begin, int end, int k)
+  private void swap (int[] nums, int i, int j)
   {
-    int f = begin, e = end - 1;
-    int x = nums[rand.nextInt(end - begin) + begin];
-    while (f <= e)
-    {
-      while (f <= e && nums[f] < x)
-        ++f;
-      while (f <= e && nums[e] > x)
-        --e;
-      if (f <= e)
-      {
-        int t = nums[f];
-        nums[f] = nums[e];
-        nums[e] = t;
-        ++f;
-        --e;
-      }
-    }
-    if (nums.length - k <= e)
-      return find(nums, begin, e + 1, k);
-    else if (nums.length - k >= f)
-      return find(nums, f, end, k);
-    else
-      return x;
+    int tmp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = tmp;
   }
+
+  private int find (int[] nums, int lo, int hi, int k)
+  {
+    swap(nums, lo, rand.nextInt(hi - lo) + lo);
+    int j = lo + 1;
+    for (int i = lo + 1; i < hi; ++i)
+    {
+      if (nums[i] <= nums[lo])
+        swap(nums, i, j++);
+    }
+    swap(nums, lo, --j);
+    if (nums.length - k > j)
+      return find(nums, j + 1, hi, k);
+    else if (nums.length - k < j)
+      return find(nums, lo, j, k);
+    else
+      return nums[j];
+}
 
   public int findKthLargest (int[] nums, int k)
   {
